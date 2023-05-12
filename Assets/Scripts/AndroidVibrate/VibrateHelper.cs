@@ -4,11 +4,8 @@ using UnityEngine;
 
 public class VibrateHelper : MonoBehaviour
 {
-    public static void vibrateSmall()
-    {
-        Debug.Log("Vibrate");
-    }
-    static public bool Acitve { get { return VibrateController.Vibratable; } }
+
+    public static bool Active;
 #if UNITY_IOS
         [DllImport("__Internal")]
         static extern void _vibrateSmall();
@@ -53,23 +50,39 @@ public class VibrateHelper : MonoBehaviour
             return _vibrator;
         }
     }
-
+#endif
+    
+    
     public static void vibrateSmall()
     {
-        if (!Application.isEditor && Acitve)
+#if UNITY_EDITOR
+        if (Active)
+            Debug.Log("Vibrate Small");
+#elif UNITY_ANDROID
+        if (!Application.isEditor && Active)
             vibrateManager.Call("vibrate", 20L);
+#endif
     }
 
     public static void vibrateMedium()
     {
-        if (!Application.isEditor && Acitve)
+#if UNITY_EDITOR
+        if (Active)
+            Debug.Log("Vibrate Medium");
+#elif UNITY_ANDROID
+        if (!Application.isEditor && Active)
             vibrateManager.Call("vibrate", 45L);
+#endif
     }
 
     public static void vibrateLarge()
     {
-        if (!Application.isEditor && Acitve)
+#if UNITY_EDITOR
+        if (Active)
+            Debug.Log("Vibrate Large");
+#elif UNITY_ANDROID
+        if (!Application.isEditor && Active)
             vibrateManager.Call("vibrate", 85L);
-    }
 #endif
+    }
 }
